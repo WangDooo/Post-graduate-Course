@@ -6,9 +6,24 @@
 import numpy as np  
 import matplotlib.pyplot as plt  
   
+PI = 30
+# 土重度
+y = 16
+# 附加荷载 50 Kpa
+surchange = 50 
+
+sigma_v =  [0]*9
+sigma_vp = [0]*9
+OCR = [0]*9
+Su =  [0]*9
+
 x = [0.5,1,2,5,10,20,30,40,50] 
-OCR = [17,9,5,2.6,1.8,1.4,1.27,1.2,1.16]  
-Su = [6.65,8,10,15,22,36,50,63,77]
+
+for i in range(9):
+	sigma_v[i] = x[i]*(16-9.8)
+	sigma_vp[i] = sigma_v[i] + surchange
+	OCR[i] = sigma_vp[i] / sigma_v[i]
+	Su[i] = (0.11+0.0037*PI)*OCR[i]**0.8*sigma_v[i]
   
 fig = plt.figure()  
 ax1 = fig.add_subplot(111)  
@@ -17,7 +32,7 @@ Su, = ax1.plot(Su, x, label="Su",color="r",marker='o')
 # 设置对应坐标轴的名称  
 ax1.set_ylabel("Depth(m)") 
 
-ax1.set_xlabel("Undrained shear strength(Kpa)")  s 
+ax1.set_xlabel("Undrained shear strength(Kpa)") 
 
 # x轴反向显示
 fig.gca().invert_yaxis()
